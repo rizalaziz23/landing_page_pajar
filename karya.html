@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karya — UI/UX Portfolio</title>
+    <meta name="description"
+        content="Koleksi lengkap portofolio desain UI/UX — Mobile App, Web Design, Dashboard, dan Branding.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        /* Portfolio Card */
+        .portfolio-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .portfolio-card:hover .card-image img {
+            transform: scale(1.08);
+        }
+
+        .portfolio-card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-card:hover .card-arrow {
+            background-color: #3B82F6;
+            color: white;
+            border-color: #3B82F6;
+        }
+
+        .card-image img {
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-overlay {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Filter Button Active */
+        .filter-btn.active {
+            background-color: #3B82F6;
+            color: white;
+        }
+
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover:not(.active) {
+            background-color: #E2E8F0;
+        }
+
+        /* Case Study Modal */
+        .modal-backdrop {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .modal-backdrop.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            transform: translateY(40px) scale(0.95);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-backdrop.active .modal-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        /* Fade-in animation for cards */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        /* Staggered animation */
+        .portfolio-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .portfolio-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .portfolio-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .portfolio-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .portfolio-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .portfolio-card:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        /* Tag pill */
+        .tag-pill {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(59, 130, 246, 0.15);
+        }
+
+        /* Scrollbar styling for modal */
+        .modal-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .modal-scroll::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 3px;
+        }
+
+        /* Mobile hamburger */
+        .hamburger-line {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-900 overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-extrabold tracking-tight">
+                <span class="text-blue-600">UI</span>UX.
+            </a>
+            <div class="hidden md:flex space-x-10 font-medium text-slate-600">
+                <a href="index.html#home" class="hover:text-blue-600 transition">Beranda</a>
+                <a href="index.html#about" class="hover:text-blue-600 transition">Tentang</a>
+                <a href="index.html#experience" class="hover:text-blue-600 transition">Pengalaman</a>
+                <a href="karya.html" class="text-blue-600 font-bold transition">Karya</a>
+                <a href="index.html#process" class="hover:text-blue-600 transition">Proses</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="index.html#contact"
+                    class="hidden sm:inline-block bg-slate-900 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-blue-600 transition duration-300">
+                    Kontak Saya
+                </a>
+                <!-- Hamburger Menu -->
+                <button id="hamburgerBtn" class="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5">
+                    <span class="hamburger-line block w-6 h-0.5 bg-slate-900 rounded-full"></span>
+                    <span class="hamburger-line block w-6 h-0.5 bg-slate-900 rounded-full"></span>
+                    <span class="hamburger-line block w-4 h-0.5 bg-slate-900 rounded-full"></span>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-100 px-6 py-6 space-y-4">
+            <a href="index.html#home"
+                class="block text-slate-700 font-medium hover:text-blue-600 transition py-2">Beranda</a>
+            <a href="index.html#about"
+                class="block text-slate-700 font-medium hover:text-blue-600 transition py-2">Tentang</a>
+            <a href="index.html#experience"
+                class="block text-slate-700 font-medium hover:text-blue-600 transition py-2">Pengalaman</a>
+            <a href="karya.html" class="block text-blue-600 font-bold transition py-2">Karya</a>
+            <a href="index.html#process"
+                class="block text-slate-700 font-medium hover:text-blue-600 transition py-2">Proses</a>
+            <a href="index.html#contact"
+                class="block bg-slate-900 text-white text-center px-6 py-3 rounded-full font-semibold hover:bg-blue-600 transition mt-4">Kontak
+                Saya</a>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <section class="relative pt-32 pb-16 overflow-hidden">
+        <div class="blob top-[-150px] right-[-100px]"></div>
+        <div class="blob bottom-[-100px] left-[-200px]"></div>
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <span
+                class="inline-block py-1.5 px-5 rounded-full bg-blue-50 text-blue-600 text-sm font-bold mb-6 border border-blue-100 uppercase tracking-widest">
+                Portfolio Lengkap
+            </span>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+                Semua <span class="gradient-text">Karya & Proyek</span> Saya
+            </h1>
+            <p class="max-w-2xl mx-auto text-lg text-slate-600 leading-relaxed">
+                Jelajahi koleksi lengkap proyek desain saya — dari riset pengguna hingga prototipe akhir. Setiap karya
+                dirancang untuk memecahkan masalah nyata.
+            </p>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="pb-8">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-wrap justify-center gap-3">
+                <button class="filter-btn active px-6 py-2.5 rounded-full font-bold text-sm" data-filter="all">
+                    <i class="fas fa-th-large mr-2"></i>Semua
+                </button>
+                <button class="filter-btn px-6 py-2.5 rounded-full font-bold text-sm text-slate-500"
+                    data-filter="mobile">
+                    <i class="fas fa-mobile-alt mr-2"></i>Mobile App
+                </button>
+                <button class="filter-btn px-6 py-2.5 rounded-full font-bold text-sm text-slate-500" data-filter="web">
+                    <i class="fas fa-globe mr-2"></i>Web Design
+                </button>
+                <button class="filter-btn px-6 py-2.5 rounded-full font-bold text-sm text-slate-500"
+                    data-filter="dashboard">
+                    <i class="fas fa-chart-bar mr-2"></i>Dashboard
+                </button>
+                <button class="filter-btn px-6 py-2.5 rounded-full font-bold text-sm text-slate-500"
+                    data-filter="branding">
+                    <i class="fas fa-palette mr-2"></i>Branding
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Grid -->
+    <section class="py-12 pb-24">
+        <div class="max-w-7xl mx-auto px-6">
+            <div id="portfolioGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Card 1: NeoPay -->
+                <div class="portfolio-card fade-in-up bg-white rounded-[2rem] overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl"
+                    data-category="mobile" data-index="0">
+                    <div class="card-image relative overflow-hidden h-56">
+                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=800&q=80"
+                            alt="NeoPay Digital Banking App" class="w-full h-full object-cover">
+                        <div
+                            class="card-overlay absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent flex items-end p-6">
+                            <span class="text-white font-bold text-sm uppercase tracking-wider">Mobile App</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span
+                                class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-blue-700">Fintech</span>
+                            <span class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-purple-700">UI
+                                Design</span>
+                            <span class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-emerald-700">UX
+                                Research</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-slate-900">NeoPay: Reimagining Digital Banking</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-5">Mempermudah manajemen keuangan untuk
+                            generasi Z dengan antarmuka yang bersih dan fitur personalisasi canggih.</p>
+                        <button
+                            class="view-case-study w-full flex items-center justify-center gap-2 px-5 py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-blue-600 transition duration-300 text-sm">
+                            <i class="fas fa-eye"></i> View Case Study
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 2: CloudAnalytics -->
+                <div class="portfolio-card fade-in-up bg-white rounded-[2rem] overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl"
+                    data-category="dashboard" data-index="1">
+                    <div class="card-image relative overflow-hidden h-56">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"
+                            alt="CloudAnalytics Dashboard" class="w-full h-full object-cover">
+                        <div
+                            class="card-overlay absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent flex items-end p-6">
+                            <span class="text-white font-bold text-sm uppercase tracking-wider">Dashboard</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span
+                                class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-blue-700">SaaS</span>
+                            <span class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-purple-700">Data
+                                Viz</span>
+                            <span class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-emerald-700">Web
+                                App</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-slate-900">CloudAnalytics: Data Visualization</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-5">Dashboard kompleks yang dirancang agar
+                            mudah dibaca dan dianalisis dalam satu layar untuk keputusan bisnis cepat.</p>
+                        <button
+                            class="view-case-study w-full flex items-center justify-center gap-2 px-5 py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-blue-600 transition duration-300 text-sm">
+                            <i class="fas fa-eye"></i> View Case Study
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 3: TravelMate -->
+                <div class="portfolio-card fade-in-up bg-white rounded-[2rem] overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl"
+                    data-category="mobile" data-index="2">
+                    <div class="card-image relative overflow-hidden h-56">
+                        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80"
+                            alt="TravelMate App" class="w-full h-full object-cover">
+                        <div
+                            class="card-overlay absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent flex items-end p-6">
+                            <span class="text-white font-bold text-sm uppercase tracking-wider">Mobile App</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span
+                                class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-blue-700">Travel</span>
+                            <span
+                                class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-purple-700">Mobile</span>
+                            <span
+                                class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-emerald-700">Booking</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-slate-900">TravelMate: Smart Trip Planner</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-5">Aplikasi perencanaan perjalanan cerdas
+                            dengan AI-powered recommendations dan integrasi booking end-to-end.</p>
+                        <button
+                            class="view-case-study w-full flex items-center justify-center gap-2 px-5 py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-blue-600 transition duration-300 text-sm">
+                            <i class="fas fa-eye"></i> View Case Study
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 4: EduSpace -->
+                <div class="portfolio-card fade-in-up bg-white rounded-[2rem] overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl"
+                    data-category="web" data-index="3">
+                    <div class="card-image relative overflow-hidden h-56">
+                        <img src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=800&q=80"
+                            alt="EduSpace Learning Platform" class="w-full h-full object-cover">
+                        <div
+                            class="card-overlay absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent flex items-end p-6">
+                            <span class="text-white font-bold text-sm uppercase tracking-wider">Web Design</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span
+                                class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-blue-700">EdTech</span>
+                            <span
+                                class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-purple-700">E-Learning</span>
+                            <span
+                                class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-emerald-700">Responsive</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-slate-900">EduSpace: Learning Platform</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-5">Platform belajar online dengan pengalaman
+                            interaktif — video, kuis, dan progress tracking yang gamified.</p>
+                        <button
+                            class="view-case-study w-full flex items-center justify-center gap-2 px-5 py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-blue-600 transition duration-300 text-sm">
+                            <i class="fas fa-eye"></i> View Case Study
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 5: FreshCart -->
+                <div class="portfolio-card fade-in-up bg-white rounded-[2rem] overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl"
+                    data-category="web" data-index="4">
+                    <div class="card-image relative overflow-hidden h-56">
+                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80"
+                            alt="FreshCart E-Commerce" class="w-full h-full object-cover">
+                        <div
+                            class="card-overlay absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent flex items-end p-6">
+                            <span class="text-white font-bold text-sm uppercase tracking-wider">Web Design</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span
+                                class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-blue-700">E-Commerce</span>
+                            <span
+                                class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-purple-700">Grocery</span>
+                            <span
+                                class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-emerald-700">Checkout
+                                UX</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-slate-900">FreshCart: Grocery E-Commerce</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-5">Desain e-commerce groceries dengan
+                            checkout cepat satu langkah dan pengalaman belanja yang menyenangkan.</p>
+                        <button
+                            class="view-case-study w-full flex items-center justify-center gap-2 px-5 py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-blue-600 transition duration-300 text-sm">
+                            <i class="fas fa-eye"></i> View Case Study
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 6: VitaFit -->
+                <div class="portfolio-card fade-in-up bg-white rounded-[2rem] overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl"
+                    data-category="branding" data-index="5">
+                    <div class="card-image relative overflow-hidden h-56">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=80"
+                            alt="VitaFit Health Branding" class="w-full h-full object-cover">
+                        <div
+                            class="card-overlay absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent flex items-end p-6">
+                            <span class="text-white font-bold text-sm uppercase tracking-wider">Branding</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span
+                                class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-blue-700">Health</span>
+                            <span
+                                class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-purple-700">Branding</span>
+                            <span
+                                class="tag-pill px-3 py-1 rounded-full text-xs font-semibold text-emerald-700">Identity</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-slate-900">VitaFit: Health & Wellness Brand</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-5">Identitas visual lengkap untuk brand
+                            kesehatan — logo, panduan warna, tipografi, dan aset digital marketing.</p>
+                        <button
+                            class="view-case-study w-full flex items-center justify-center gap-2 px-5 py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-blue-600 transition duration-300 text-sm">
+                            <i class="fas fa-eye"></i> View Case Study
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden text-center py-20">
+                <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-folder-open text-3xl text-slate-400"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-700 mb-2">Belum ada proyek di kategori ini</h3>
+                <p class="text-slate-500">Proyek baru akan segera ditambahkan.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="bg-blue-600 rounded-[3rem] p-12 md:p-20 text-center text-white relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full -mr-32 -mt-32"></div>
+                <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full -ml-24 -mb-24"></div>
+                <div class="relative z-10">
+                    <h2 class="text-4xl md:text-5xl font-extrabold mb-6">Tertarik Berkolaborasi?</h2>
+                    <p class="text-blue-100 mb-10 text-lg max-w-xl mx-auto">Saya selalu antusias untuk mengerjakan
+                        proyek baru. Mari wujudkan ide Anda menjadi produk digital yang luar biasa.</p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <a href="mailto:hello@designer.com"
+                            class="px-10 py-4 bg-white text-blue-600 rounded-2xl font-bold shadow-xl hover:bg-slate-100 transition inline-flex items-center gap-3">
+                            <i class="fas fa-envelope"></i> Hubungi Sekarang
+                        </a>
+                        <a href="index.html"
+                            class="px-10 py-4 bg-blue-700 text-white rounded-2xl font-bold hover:bg-blue-800 transition inline-flex items-center gap-3 border border-blue-500">
+                            <i class="fas fa-arrow-left"></i> Kembali ke Beranda
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+            <a href="index.html" class="text-2xl font-extrabold">
+                <span class="text-blue-600">UI</span>UX.
+            </a>
+            <div class="flex space-x-8 text-slate-500 font-medium">
+                <a href="#" class="hover:text-blue-600"><i class="fab fa-dribbble mr-1"></i>Dribbble</a>
+                <a href="#" class="hover:text-blue-600"><i class="fab fa-behance mr-1"></i>Behance</a>
+                <a href="#" class="hover:text-blue-600"><i class="fab fa-instagram mr-1"></i>Instagram</a>
+                <a href="#" class="hover:text-blue-600"><i class="fab fa-twitter mr-1"></i>Twitter</a>
+            </div>
+            <p class="text-slate-400 text-sm">© 2024 UI/UX Portfolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Case Study Modal -->
+    <div id="caseStudyModal" class="modal-backdrop fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div class="modal-content bg-white rounded-[2rem] w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl">
+            <!-- Modal Header -->
+            <div class="relative">
+                <div id="modalImage" class="h-64 md:h-80 bg-slate-200 overflow-hidden">
+                    <img src="" alt="" class="w-full h-full object-cover">
+                </div>
+                <button id="closeModal"
+                    class="absolute top-4 right-4 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-slate-700 hover:bg-white hover:text-red-500 transition shadow-lg">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+                <div
+                    class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent h-32 flex items-end p-6 md:p-8">
+                    <span id="modalCategory" class="text-white/80 font-bold text-sm uppercase tracking-wider"></span>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-scroll overflow-y-auto" style="max-height: calc(90vh - 20rem);">
+                <div class="p-6 md:p-10">
+                    <h2 id="modalTitle" class="text-3xl md:text-4xl font-extrabold mb-4 text-slate-900"></h2>
+                    <p id="modalDescription" class="text-slate-600 text-lg leading-relaxed mb-8"></p>
+
+                    <!-- Project Details Grid -->
+                    <div class="grid md:grid-cols-3 gap-6 mb-10">
+                        <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div
+                                    class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                                    <i class="fas fa-user text-sm"></i>
+                                </div>
+                                <span class="text-sm font-bold text-slate-400 uppercase tracking-wide">Peran</span>
+                            </div>
+                            <p id="modalRole" class="font-bold text-slate-900"></p>
+                        </div>
+                        <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div
+                                    class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600">
+                                    <i class="fas fa-calendar text-sm"></i>
+                                </div>
+                                <span class="text-sm font-bold text-slate-400 uppercase tracking-wide">Durasi</span>
+                            </div>
+                            <p id="modalDuration" class="font-bold text-slate-900"></p>
+                        </div>
+                        <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div
+                                    class="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center text-emerald-600">
+                                    <i class="fas fa-tools text-sm"></i>
+                                </div>
+                                <span class="text-sm font-bold text-slate-400 uppercase tracking-wide">Tools</span>
+                            </div>
+                            <p id="modalTools" class="font-bold text-slate-900"></p>
+                        </div>
+                    </div>
+
+                    <!-- Challenge & Solution -->
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-xl font-bold mb-3 flex items-center gap-3">
+                                <span
+                                    class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center text-red-600 text-sm"><i
+                                        class="fas fa-exclamation-triangle"></i></span>
+                                Tantangan
+                            </h3>
+                            <p id="modalChallenge" class="text-slate-600 leading-relaxed pl-11"></p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-3 flex items-center gap-3">
+                                <span
+                                    class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center text-green-600 text-sm"><i
+                                        class="fas fa-lightbulb"></i></span>
+                                Solusi
+                            </h3>
+                            <p id="modalSolution" class="text-slate-600 leading-relaxed pl-11"></p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-3 flex items-center gap-3">
+                                <span
+                                    class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 text-sm"><i
+                                        class="fas fa-chart-line"></i></span>
+                                Hasil
+                            </h3>
+                            <div id="modalResults" class="grid grid-cols-2 md:grid-cols-3 gap-4 pl-11"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // Portfolio Data
+        // ============================================================
+        const portfolioData = [
+            {
+                title: "NeoPay: Reimagining Digital Banking",
+                category: "Mobile App",
+                description: "Merancang ulang pengalaman perbankan digital untuk generasi Z. NeoPay berfokus pada personalisasi, transparansi keuangan, dan gamifikasi tabungan agar pengelolaan uang terasa lebih menarik dan mudah.",
+                image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1200&q=80",
+                role: "Lead UI/UX Designer",
+                duration: "4 Bulan",
+                tools: "Figma, Maze, Hotjar",
+                challenge: "Pengguna muda merasa aplikasi perbankan tradisional terlalu kaku dan membosankan. Tingkat adopsi rendah di kalangan usia 18-25 tahun, sementara fitur-fitur keuangan dianggap terlalu rumit.",
+                solution: "Mengimplementasikan onboarding interaktif dengan ilustrasi mikro, dashboard yang dipersonalisasi berdasarkan kebiasaan belanja, dan fitur savings challenge yang ter-gamifikasi dengan reward system.",
+                results: [
+                    { value: "+42%", label: "User Adoption" },
+                    { value: "4.8★", label: "App Store Rating" },
+                    { value: "-60%", label: "Support Tickets" }
+                ]
+            },
+            {
+                title: "CloudAnalytics: Data Visualization",
+                category: "Dashboard",
+                description: "Dashboard analitik cloud yang menyederhanakan data kompleks menjadi visualisasi yang mudah dipahami. Dirancang untuk manajer produk dan eksekutif yang perlu mengambil keputusan cepat berbasis data.",
+                image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+                role: "Product Designer",
+                duration: "6 Bulan",
+                tools: "Figma, D3.js, Amplitude",
+                challenge: "Klien enterprise kesulitan memahami data analytics mereka karena dashboard yang terlalu padat dan membingungkan. Waktu rata-rata untuk menemukan insight kritis adalah 15 menit.",
+                solution: "Mendesain hierarki informasi baru dengan progressive disclosure, widget yang dapat di-kustomisasi, dan AI-powered highlights untuk insight penting yang muncul secara proaktif.",
+                results: [
+                    { value: "-75%", label: "Time to Insight" },
+                    { value: "+30%", label: "Daily Active Users" },
+                    { value: "98%", label: "Satisfaction Rate" }
+                ]
+            },
+            {
+                title: "TravelMate: Smart Trip Planner",
+                category: "Mobile App",
+                description: "Aplikasi perencanaan perjalanan yang memanfaatkan AI untuk memberikan rekomendasi personal, mengelola itinerary, dan mengintegrasikan booking hotel, penerbangan, dan aktivitas dalam satu platform.",
+                image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80",
+                role: "UX Designer & Researcher",
+                duration: "5 Bulan",
+                tools: "Figma, Miro, UserTesting",
+                challenge: "Traveler menghabiskan rata-rata 3-4 jam di berbagai platform untuk merencanakan satu perjalanan. Informasi tersebar dan proses booking yang fragmentasi menyebabkan frustrasi tinggi.",
+                solution: "Membangun pengalaman end-to-end dengan smart itinerary builder, integrasi multi-vendor, dan fitur collaborative trip planning untuk perjalanan grup.",
+                results: [
+                    { value: "500K+", label: "Downloads" },
+                    { value: "-70%", label: "Planning Time" },
+                    { value: "4.7★", label: "Play Store Rating" }
+                ]
+            },
+            {
+                title: "EduSpace: Learning Platform",
+                category: "Web Design",
+                description: "Platform e-learning masa depan yang menggabungkan video interaktif, kuis adaptif, dan social learning. Dirancang untuk meningkatkan engagement dan retensi siswa dengan pengalaman belajar yang dipersonalisasi.",
+                image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=1200&q=80",
+                role: "UI/UX Designer",
+                duration: "8 Bulan",
+                tools: "Figma, Principle, Notion",
+                challenge: "Platform e-learning yang ada memiliki tingkat penyelesaian kursus sangat rendah (sekitar 15%). Siswa kehilangan motivasi karena pengalaman belajar yang monoton dan tidak interaktif.",
+                solution: "Menghadirkan micro-learning modules, progress streak system, peer discussion spaces, dan adaptive quiz engine yang menyesuaikan tingkat kesulitan berdasarkan performa siswa.",
+                results: [
+                    { value: "+85%", label: "Course Completion" },
+                    { value: "2.5x", label: "Time on Platform" },
+                    { value: "+120%", label: "User Engagement" }
+                ]
+            },
+            {
+                title: "FreshCart: Grocery E-Commerce",
+                category: "Web Design",
+                description: "Revolusi belanja groceries online dengan fokus pada pengalaman checkout ultra-cepat, visual produk yang menarik, dan smart cart recommendations yang membantu pelanggan berbelanja lebih efisien.",
+                image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=80",
+                role: "Senior UI Designer",
+                duration: "3 Bulan",
+                tools: "Figma, Shopify, Google Analytics",
+                challenge: "Rata-rata cart abandonment rate mencapai 72%. Pelanggan mengeluh tentang proses checkout yang panjang, foto produk yang tidak menarik, dan minimnya informasi ketersediaan stok secara real-time.",
+                solution: "Mendesain one-tap checkout flow, foto produk hi-res dengan zoom capability, real-time stock indicators, dan smart reorder feature berdasarkan riwayat belanja.",
+                results: [
+                    { value: "-45%", label: "Cart Abandonment" },
+                    { value: "+35%", label: "Conversion Rate" },
+                    { value: "+50%", label: "Repeat Orders" }
+                ]
+            },
+            {
+                title: "VitaFit: Health & Wellness Brand",
+                category: "Branding",
+                description: "Identitas visual lengkap untuk brand health & wellness premium — meliputi logo design, brand guidelines, packaging, dan seluruh aset digital marketing yang kohesif dan memorable.",
+                image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1200&q=80",
+                role: "Brand Designer",
+                duration: "2 Bulan",
+                tools: "Illustrator, Photoshop, Figma",
+                challenge: "Startup wellness baru yang ingin menonjol di pasar yang sangat kompetitif. Mereka membutuhkan identitas brand yang menyampaikan kesan premium, natural, dan trustworthy secara bersamaan.",
+                solution: "Menciptakan identitas visual dengan palet warna earth-tone yang segar, custom wordmark yang elegan, dan comprehensive brand system yang konsisten di seluruh touchpoint.",
+                results: [
+                    { value: "+200%", label: "Brand Recognition" },
+                    { value: "50+", label: "Brand Assets" },
+                    { value: "100%", label: "Client Satisfaction" }
+                ]
+            }
+        ];
+
+        // ============================================================
+        // Filter Functionality
+        // ============================================================
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const portfolioCards = document.querySelectorAll('.portfolio-card');
+        const emptyState = document.getElementById('emptyState');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active state
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.getAttribute('data-filter');
+                let visibleCount = 0;
+
+                portfolioCards.forEach(card => {
+                    const category = card.getAttribute('data-category');
+                    if (filter === 'all' || category === filter) {
+                        card.style.display = 'block';
+                        // Re-trigger animation
+                        card.style.animation = 'none';
+                        card.offsetHeight; // trigger reflow
+                        card.style.animation = '';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Show/hide empty state
+                emptyState.classList.toggle('hidden', visibleCount > 0);
+            });
+        });
+
+        // ============================================================
+        // Case Study Modal
+        // ============================================================
+        const modal = document.getElementById('caseStudyModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const viewButtons = document.querySelectorAll('.view-case-study');
+
+        viewButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const card = e.target.closest('.portfolio-card');
+                const index = parseInt(card.getAttribute('data-index'));
+                const data = portfolioData[index];
+
+                // Populate modal
+                document.querySelector('#modalImage img').src = data.image;
+                document.querySelector('#modalImage img').alt = data.title;
+                document.getElementById('modalCategory').textContent = data.category;
+                document.getElementById('modalTitle').textContent = data.title;
+                document.getElementById('modalDescription').textContent = data.description;
+                document.getElementById('modalRole').textContent = data.role;
+                document.getElementById('modalDuration').textContent = data.duration;
+                document.getElementById('modalTools').textContent = data.tools;
+                document.getElementById('modalChallenge').textContent = data.challenge;
+                document.getElementById('modalSolution').textContent = data.solution;
+
+                // Populate results
+                const resultsContainer = document.getElementById('modalResults');
+                resultsContainer.innerHTML = '';
+                data.results.forEach(result => {
+                    const resultEl = document.createElement('div');
+                    resultEl.className = 'bg-blue-50 rounded-xl p-4 text-center border border-blue-100';
+                    resultEl.innerHTML = `
+                        <p class="text-2xl font-extrabold text-blue-600 mb-1">${result.value}</p>
+                        <p class="text-xs text-slate-500 font-semibold">${result.label}</p>
+                    `;
+                    resultsContainer.appendChild(resultEl);
+                });
+
+                // Show modal
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // ============================================================
+        // Hamburger Menu
+        // ============================================================
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        hamburgerBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>
